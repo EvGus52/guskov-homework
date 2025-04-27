@@ -64,8 +64,59 @@
   </body>
 
   <script>
-    "use strict";
     
-    console.log("It works!");
+    const listEl = document.querySelector('.comments');
+    const buttonEl = document.querySelector('.add-form-button');
+    const inputName = document.querySelector('.add-form-name');
+    const inputText = document.querySelector('.add-form-text');
+    
+    function formatDate(date) {
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear().toString().slice(-2);
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${day}.${month}.${year} ${hours}:${minutes}`;
+      }
+
+    buttonEl.addEventListener('click', () => {
+    inputName.style.backgroundColor = '';
+    inputText.style.backgroundColor = '';
+
+    if (inputName.value.trim() === '') {
+      inputName.style.backgroundColor = '#ffdddd';
+      alert('Имя не может быть пустым');
+      return;
+    }
+    if (inputText.value.trim() === '') {
+      inputText.style.backgroundColor = '#ffdddd';
+      alert('Комментарий не может быть пустым');
+      return;
+    }
+
+    const newComment = `
+          <li class="comment">
+            <div class="comment-header">
+              <div>${inputName.value}</div>
+              <div>${formatDate(new Date())}</div>
+            </div>
+            <div class="comment-body">
+              <div class="comment-text">${inputText.value}</div>
+            </div>
+            <div class="comment-footer">
+              <div class="likes">
+                <span class="likes-counter">0</span>
+                <button class="like-button"></button>
+              </div>
+            </div>
+          </li>
+        `;
+
+        listEl.innerHTML += newComment;
+        inputName.value = '';
+        inputText.value = '';
+      });
+    
+    console.log(list.textContent);
   </script>
 </html>
