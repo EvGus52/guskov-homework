@@ -1,5 +1,6 @@
 import { comments } from './comments.js'
-import { initLikeListeners, initReplyListeners } from './initListeners'
+import { initLikeListeners, initReplyListeners } from './initListeners.js'
+
 export const renderComments = () => {
     const list = document.querySelector('.comments')
     list.innerHTML = comments
