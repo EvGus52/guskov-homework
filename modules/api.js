@@ -1,4 +1,4 @@
-const host = 'https://wedev-api.sky.pro/api/v1/EvGus52'
+const host = 'https://wedev-api.sky.pro/api/v1/Evgen-Guskov'
 export const fetchComments = () => {
     return fetch(host + '/comments')
         .then((response) => {
@@ -19,11 +19,11 @@ export const fetchComments = () => {
 }
 
 export const addComment = (text, name) => {
-    return fetch(host + './comments', {
+    return fetch(host + '/comments', {
         method: 'POST',
         body: JSON.stringify({
-            text: text,
-            name: name,
+            text,
+            name,
         }),
     }).then(() => {
         return fetchComments()
