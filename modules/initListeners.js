@@ -2,6 +2,7 @@ import { comments, updateComments } from './comments.js'
 import { sanitize } from './sanitizeHtml.js'
 import { renderComments } from './renderComments.js'
 import { addComment } from './api.js'
+import { delay } from './delayFunction.js'
 
 export const initLikeListeners = (renderComments) => {
     const likeButtons = document.querySelectorAll('.like-button')
@@ -12,13 +13,16 @@ export const initLikeListeners = (renderComments) => {
 
             const index = likeButton.dataset.index
             const comment = comments[index]
-
-            comment.likes = comment.isLiked
-                ? comment.likes - 1
-                : comment.likes + 1
-            comment.isLiked = !comment.isLiked
-
-            renderComments()
+            likeButton.disabled = true
+            likeButton.classList.add('loading-like')
+            delay(2000).then(() => {
+                comment.likes = comment.isLiked
+                    ? comment.likes - 1
+                    : comment.likes + 1
+                comment.isLiked = !comment.isLiked
+                comment.isLikeLoading = false
+                renderComments()
+            })
         })
     }
 }
@@ -51,9 +55,14 @@ export const initAddCommentListener = () => {
             alert('Комментарий не может быть пустым')
             return
         }
+        document.querySelector('.add-form').style.display = 'none'
+        document.querySelector('.comment-loading').style.display = 'block'
 
         addComment(sanitize(inputText.value), sanitize(inputName.value)).then(
             (data) => {
+                document.querySelector('.comment-loading').style.display =
+                    'none'
+                document.querySelector('.add-form').style.display = 'flex'
                 updateComments(data)
                 renderComments()
                 inputName.value = ''
