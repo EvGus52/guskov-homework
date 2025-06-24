@@ -5,16 +5,13 @@ export const fetchComments = () => {
             return response.json()
         })
         .then((responseData) => {
-            const appComments = responseData.comments.map((comment) => {
-                return {
-                    name: comment.author.name,
-                    date: new Date(comment.date),
-                    text: comment.text,
-                    likes: comment.likes,
-                    isLiked: false,
-                }
-            })
-            return appComments
+            return responseData.comments.map((comment) => ({
+                name: comment.author.name,
+                date: new Date(comment.date),
+                text: comment.text,
+                likes: comment.likes,
+                isLiked: false,
+            }))
         })
 }
 
