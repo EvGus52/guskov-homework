@@ -21,8 +21,23 @@ export const addComment = (text, name) => {
         body: JSON.stringify({
             text,
             name,
+            forceError: true,
         }),
-    }).then(() => {
-        return fetchComments()
     })
+        .then((response) => {
+            if (response.status === 500) {
+                throw new Error('server error')
+            }
+
+            if (response.status === 400) {
+                throw new Error('user error')
+            }
+
+            if (response.status === 201) {
+                return response.json()
+            }
+        })
+        .then(() => {
+            return fetchComments()
+        })
 }
