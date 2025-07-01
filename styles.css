@@ -163,3 +163,8 @@ body {
 .error-bgc {
     background-color: rgb(235, 181, 181);
 }
+
+.link-login {
+    color: #1edb38;
+    text-decoration: underline;
+}
