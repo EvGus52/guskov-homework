@@ -58,8 +58,8 @@ export const initAddCommentListener = () => {
         document.querySelector('.add-form').style.display = 'none'
         document.querySelector('.comment-loading').style.display = 'block'
 
-        addComment(sanitize(inputText.value), sanitize(inputName.value)).then(
-            (data) => {
+        addComment(sanitize(inputText.value), sanitize(inputName.value))
+            .then((data) => {
                 document.querySelector('.comment-loading').style.display =
                     'none'
                 document.querySelector('.add-form').style.display = 'flex'
@@ -67,7 +67,27 @@ export const initAddCommentListener = () => {
                 renderComments()
                 inputName.value = ''
                 inputText.value = ''
-            },
-        )
+                inputName.classList.remove('error-bgc')
+                inputText.classList.remove('error-bgc')
+            })
+            .catch((error) => {
+                document.querySelector('.comment-loading').style.display =
+                    'none'
+                document.querySelector('.add-form').style.display = 'flex'
+
+                if (error.message === 'Failed to fetch') {
+                    alert(`Кажется, у вас сломался интернет, попробуйте позже`)
+                }
+
+                if (error.message === 'server error') {
+                    alert(`Сервер сломался, попробуй позже`)
+                }
+
+                if (error.message === 'user error') {
+                    alert(`Имя и комментарий должны быть не короче 3 символов`)
+                    inputName.classList.add('error-bgc')
+                    inputText.classList.add('error-bgc')
+                }
+            })
     })
 }
