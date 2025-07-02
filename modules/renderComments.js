@@ -1,5 +1,11 @@
 import { comments } from './comments.js'
-import { initLikeListeners, initReplyListeners } from './initListeners.js'
+import {
+    initLikeListeners,
+    initReplyListeners,
+    initAddCommentListener,
+} from './initListeners.js'
+import { renderLogin } from './renderLogin.js'
+import { token, name } from './api.js'
 
 export const renderComments = () => {
     const container = document.querySelector('.container')
@@ -32,6 +38,8 @@ export const renderComments = () => {
                     type="text"
                     class="add-form-name"
                     placeholder="Введите ваше имя"
+                    readonly
+                    value="${name}"
                 />
                 <textarea
                     type="textarea"
@@ -49,11 +57,18 @@ export const renderComments = () => {
 
     const baseHtml = `
     <ul class="comments">${commentsHtml}</ul>
-    ${linkToLoginTest}
+    ${token ? addCommentsHtml : linkToLoginTest}
     `
 
     container.innerHTML = baseHtml
 
-    initLikeListeners(renderComments)
-    initReplyListeners()
+    if (token) {
+        initLikeListeners(renderComments)
+        initReplyListeners()
+        initAddCommentListener(renderComments)
+    } else {
+        document.querySelector('.link-login').addEventListener('click', () => {
+            renderLogin()
+        })
+    }
 }

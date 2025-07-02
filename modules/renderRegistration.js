@@ -1,15 +1,19 @@
-import { login, setToken, setName } from './api.js'
+import { setToken, setName, registration } from './api.js'
 import { fetchAndRenderComments } from './index.js'
-import { renderRegistration } from './renderRegistration.js'
-export const renderLogin = () => {
+import { renderLogin } from './renderLogin.js'
+export const renderRegistration = () => {
     const container = document.querySelector('.container')
     const loginHtml = `
 <section class="auth-form">
-        <h2>Авторизация</h2>
+        <h2>Форма регистрации</h2>
         <form id="loginForm">
+        <div class="form-group">
+                <label for="user-name">Ваше имя:</label>
+                <input type="text" id="name" name="user-name" required>
+            </div>
             <div class="form-group">
-                <label for="username">Логин:</label>
-                <input type="text" id="login" name="username" required>
+                <label for="login">Логин:</label>
+                <input type="text" id="login" name="login" required>
             </div>
             <div class="form-group">
                 <label for="password">Пароль:</label>
@@ -23,17 +27,16 @@ export const renderLogin = () => {
     </section>
 `
     container.innerHTML = loginHtml
-
-    document.querySelector('.register-btn').addEventListener('click', () => {
-        renderRegistration()
+    document.querySelector('.login-btn').addEventListener('click', () => {
+        renderLogin()
     })
-
     const loginEl = document.querySelector('#login')
+    const nameEl = document.querySelector('#name')
     const passwordEl = document.querySelector('#password')
-    const submitButtonEl = document.querySelector('.login-btn')
+    const submitButtonEl = document.querySelector('.register-btn')
 
     submitButtonEl.addEventListener('click', () => {
-        login(loginEl.value, passwordEl.value)
+        registration(loginEl.value, nameEl.value, passwordEl.value)
             .then((response) => {
                 return response.json()
             })
