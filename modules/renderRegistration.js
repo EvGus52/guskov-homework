@@ -3,7 +3,7 @@ import { fetchAndRenderComments } from './index.js'
 import { renderLogin } from './renderLogin.js'
 export const renderRegistration = () => {
     const container = document.querySelector('.container')
-    const loginHtml = `
+    const registrationHtml = `
 <section class="auth-form">
         <h2>Форма регистрации</h2>
         <form id="loginForm">
@@ -20,13 +20,13 @@ export const renderRegistration = () => {
                 <input type="password" id="password" name="password" required>
             </div>
             <div class="auth-buttons">
-                <button type="submit" class="login-btn">Войти</button>
                 <button type="button" class="register-btn" id="registerBtn">Зарегистрироваться</button>
+                <button type="button" class="login-btn">Войти</button>
             </div>
         </form>
     </section>
 `
-    container.innerHTML = loginHtml
+    container.innerHTML = registrationHtml
     document.querySelector('.login-btn').addEventListener('click', () => {
         renderLogin()
     })

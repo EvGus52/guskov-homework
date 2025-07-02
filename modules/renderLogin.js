@@ -16,7 +16,7 @@ export const renderLogin = () => {
                 <input type="password" id="password" name="password" required>
             </div>
             <div class="auth-buttons">
-                <button type="submit" class="login-btn">Войти</button>
+                <button type="button" class="login-btn ">Войти</button>
                 <button type="button" class="register-btn" id="registerBtn">Зарегистрироваться</button>
             </div>
         </form>
