@@ -1,9 +1,15 @@
 import { comments } from './comments.js'
-import { initLikeListeners, initReplyListeners } from './initListeners.js'
+import {
+    initLikeListeners,
+    initReplyListeners,
+    initAddCommentListener,
+} from './initListeners.js'
+import { renderLogin } from './renderLogin.js'
+import { token, name } from './api.js'
 
 export const renderComments = () => {
-    const list = document.querySelector('.comments')
-    list.innerHTML = comments
+    const container = document.querySelector('.container')
+    const commentsHtml = comments
         .map((comment, index) => {
             return `
       <li class="comment" data-index="${index}">
@@ -26,6 +32,43 @@ export const renderComments = () => {
         })
         .join('')
 
-    initLikeListeners(renderComments)
-    initReplyListeners()
+    const addCommentsHtml = `
+            <div class="add-form">
+                <input
+                    type="text"
+                    class="add-form-name"
+                    placeholder="Введите ваше имя"
+                    readonly
+                    value="${name}"
+                />
+                <textarea
+                    type="textarea"
+                    class="add-form-text"
+                    placeholder="Введите ваш коментарий"
+                    rows="4"
+                ></textarea>
+                <div class="add-form-row">
+                    <button class="add-form-button">Написать</button>
+                </div>
+            </div>
+            <div class="comment-loading">Комментарий добавляется...</div>`
+
+    const linkToLoginTest = `<p>для отправки комментариев, <span class="link-login">авторизуйтесь</span></p>`
+
+    const baseHtml = `
+    <ul class="comments">${commentsHtml}</ul>
+    ${token ? addCommentsHtml : linkToLoginTest}
+    `
+
+    container.innerHTML = baseHtml
+
+    if (token) {
+        initLikeListeners(renderComments)
+        initReplyListeners()
+        initAddCommentListener(renderComments)
+    } else {
+        document.querySelector('.link-login').addEventListener('click', () => {
+            renderLogin()
+        })
+    }
 }
